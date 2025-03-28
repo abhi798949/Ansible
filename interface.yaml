@@ -1,0 +1,55 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: network_cli
+  vars:
+    ansible_network_os: iosxr
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+    #- name: gather facts
+     # cisco.iosxr.iosxr_facts:
+      #register: output
+      
+    - name: set ip add
+      cisco.iosxr.iosxr_config:
+        lines:
+          - ip add 192.168.10.40 255.255.255.0
+          - no shutdown
+          - commit
+        parents: interface gigabitEthernet0/0/0/3
+
+    - name: Set Loopback
+      cisco.iosxr.iosxr_config:
+        lines:
+          - ip address 1.1.1.2 255.255.255.255
+          - no shutdown
+        parents: interface loopback1
+      register: output
+      
+    - name: OSPF
+      cisco.iosxr.iosxr_config:
+        lines:
+          - router ospf 1
+          - router-id 1.1.1.1
+          - network point-to-point
+          - area 0
+          - commit
+        parents: interface gigabitEthernet0/0/0/3
+      register: output
+      
+      
+    - name: BGP
+      cisco.iosxr.iosxr_config:
+        lines:
+          - router bgp 1
+          - bgp router-id 1.1.1.1
+          - neighbor 192.168.10.50 remote-as 1
+          - address-family ipv4 unicast
+          - commit
+        parents: interface gigabitEthernet0/0/0/3
+      register: output
+
+    - debug:
+        msg: "{{ output }}" 
+

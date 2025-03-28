@@ -1,0 +1,9 @@
+iosxe:
+  hosts:
+    xe-router:
+      ansible_host: 192.168.29.2
+      ansible_user: vayu
+      ansible_password: vayu
+      ansible_network_os: ios
+      ansible_connection: local
+      ansible_python_interpreter: /usr/bin/python3

@@ -1,0 +1,27 @@
+- name: Configure Interface with RESTCONF on IOS-XE
+  hosts: iosxe
+  gather_facts: no
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Configure Interface Ethernet0/0
+      ansible.builtin.uri:
+        url: "https://{{ ansible_host }}/restconf/data/ietf-interfaces:interfaces/interface=Ethernet0/0"
+        method: PATCH  
+        headers:
+          Content-Type: "application/yang-data+json"
+          Accept: "application/yang-data+json"
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: no
+        body_format: json
+        body:
+          ietf-interfaces:interface:
+            name: "Ethernet0/0"
+            type: "iana-if-type:ethernetCsmacd"
+            enabled: true
+            description: "Configured via RESTCONF API"
+            ietf-ip:ipv4:
+              address:
+                - ip: "192.168.1.10"
+                - netmask: "255.255.255.0"

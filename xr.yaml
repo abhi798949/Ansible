@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: netconf
+  vars:
+    ansible_network_os: iosxr
+    ansible_python_interpreter: /home/vayu/Ansible/ansible-venv/bin/python
+  tasks:
+    - name: configure interface GigabitEthernet0/0/0/1
+      netconf_config:
+        content: "{{ lookup ('file', 'interface.xml')}}"

@@ -1,0 +1,11 @@
+[all]
+router ansible_host=192.168.29.39
+
+[all:vars]
+ansible_python_interpreter=/home/vayu/Ansible/ansible-venv/bin/python
+ansible_user=vayu
+ansible_network_os=iosxr
+ansible_password=vayu
+ansible_connection=network_cli
+ansible_netconf_password=vayu
+ansible_netconf_port=830

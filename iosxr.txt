@@ -1,0 +1,8 @@
+iosxr:
+  hosts:
+    xr-router:
+      ansible_host: 192.168.29.39
+      ansible_user: vayu
+      ansible_password: vayu
+      ansible_network_os: iosxr
+      ansible_connection: local
