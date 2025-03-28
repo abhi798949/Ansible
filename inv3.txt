@@ -1,0 +1,8 @@
+[Router]
+R1 ansible_host=192.168.29.250 ansible_user=vayu ansible_ssh_pass=vayu ansible_network_os=ios authorize=yes
+R2 ansible_host=192.168.29.149 ansible_user=vayu ansible_ssh_pass=vayu ansible_network_os=ios authorize=yes
+XR1 ansible_host=192.168.29.183 ansible_user=vayu ansible_ssh_pass=vayu ansible_network_os=iosxr authorize=yes
+R3 ansible_host=192.168.29.231 ansible_user=vayu ansible_ssh_pass=vayu ansible_network_os=ios authorize=yes
+
+
+

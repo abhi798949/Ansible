@@ -1,0 +1,71 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: network_cli
+  vars:
+    ansible_network_os: iosxr
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+    - name: Set IP Address on Interface
+      cisco.iosxr.iosxr_config:
+        lines:
+          - ip address {{ interface_ip }} {{ subnet_mask }}
+          - no shutdown
+        parents: interface {{ main_interface }}
+        
+
+    - name: Commit Interface Configuration
+      cisco.iosxr.iosxr_config:
+        lines:
+          - commit
+
+    - name: Configure Loopback
+      cisco.iosxr.iosxr_config:
+        lines:
+          - ip address {{ loopback_ip }} 255.255.255.255
+          - no shutdown
+        parents: interface {{ loopback_interface }}
+
+    - name: Commit Loopback Configuration
+      cisco.iosxr.iosxr_config:
+        lines:
+          - commit
+
+
+    - name: Enable LLDP globally
+      cisco.iosxr.iosxr_config:
+        lines:
+          - lldp
+          - commit
+          
+    - name: Set NTP Server
+      cisco.iosxr.iosxr_config:
+        lines:
+          - ntp server 192.168.1.100
+          - commit
+
+    - name: Configure SNMPv2c
+      cisco.iosxr.iosxr_config:
+        lines:
+          - snmp-server community PUBLIC RO
+          - commit
+
+    - name: Configure OSPF
+      cisco.iosxr.iosxr_config:
+        lines:
+          - router ospf {{ ospf_process_id }}
+          - router-id {{ loopback_ip }}
+          - area {{ ospf_area }}
+          - interface {{ main_interface }}
+          - network point-to-point
+        parents: "interface {{ main_interface }}"
+
+    - name: Commit OSPF Configuration
+      cisco.iosxr.iosxr_config:
+        lines:
+          - commit
+
+    - name: Debug Output
+      debug:
+        msg: "Configuration applied to {{ inventory_hostname }}"

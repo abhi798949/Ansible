@@ -1,0 +1,12 @@
+[Router]
+R1 ansible_host=192.168.29.250
+R2 ansible_host=192.168.29.147
+R3 ansible_host=192.168.29.231
+XR1 ansible_host=192.168.29.163
+
+
+[Router:vars]
+ansible_ssh_user=admin
+ansible_password=admin
+ansible_connection=network_cli
+ansible_port=22

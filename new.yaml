@@ -1,0 +1,76 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: network_cli
+  vars:
+    ansible_network_os: iosxr
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+    - name: Set IP Addresses on Interfaces
+      cisco.iosxr.iosxr_config:
+        lines:
+          - ip address {{ item.interface_ip }} {{ item.subnet_mask }}
+          - no shutdown
+        parents: interface {{ item.main_interface }}
+      loop: "{{ interfaces }}"
+
+    - name: Commit Interface Configuration
+      cisco.iosxr.iosxr_config:
+        lines:
+          - commit
+
+    - name: Configure Loopback Interface
+      cisco.iosxr.iosxr_config:
+        lines:
+          - ip address {{ loopback_ip }} 255.255.255.255
+          - no shutdown
+        parents: interface {{ loopback_interface }}
+
+    - name: Commit Loopback Configuration
+      cisco.iosxr.iosxr_config:
+        lines:
+          - commit
+
+    - name: Enable LLDP globally
+      cisco.iosxr.iosxr_config:
+        lines:
+          - lldp
+          - commit
+
+    - name: Set NTP Server
+      cisco.iosxr.iosxr_config:
+        lines:
+          - ntp server 192.168.1.100
+          - commit
+
+    - name: Configure SNMPv2c
+      cisco.iosxr.iosxr_config:
+        lines:
+          - snmp-server community PUBLIC RO
+          - commit
+
+    - name: Configure OSPF on Interfaces
+      cisco.iosxr.iosxr_config:
+        lines:
+          - router ospf {{ ospf_process_id }}
+          - router-id {{ loopback_ip }}
+        parents: "router ospf {{ ospf_process_id }}"
+
+    - name: Configure OSPF Areas
+      cisco.iosxr.iosxr_config:
+        lines:
+          - area {{ ospf_area }}
+          - interface {{ item.main_interface }}
+          - network point-to-point
+        parents: "router ospf {{ ospf_process_id }}"
+      loop: "{{ interfaces }}"
+
+    - name: Commit OSPF Configuration
+      cisco.iosxr.iosxr_config:
+        lines:
+          - commit
+
+    - name: Debug Output
+      debug:
+        msg: "Configuration applied to {{ inventory_hostname }}"

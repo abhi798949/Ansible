@@ -1,0 +1,31 @@
+testbed:
+  name: IOS_Testbed
+  credentials:
+    default:
+      username: vayu
+      password: vayu
+
+devices:
+  XR1:
+    os: ios
+    type: iosxr
+    connections:
+      a:
+        protocol: ssh
+        ip: 192.168.29.41
+
+  XR2:
+    os: ios
+    type: iosxr
+    connections:
+      a:
+        protocol: ssh
+        ip: 192.168.29.25
+  
+  XR3:
+    os: ios
+    type: iosxr
+    connections:
+      a:
+        protocol: ssh
+        ip: 192.168.29.141

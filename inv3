@@ -1,0 +1,8 @@
+[Router]
+
+Ansible ansible_host=192.168.10.150
+[Router:vars]
+ansible_user=vayu
+ansible_ssh_pass=vayu
+ansible_network_os=ios
+authorize=yes

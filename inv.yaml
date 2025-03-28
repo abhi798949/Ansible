@@ -1,0 +1,54 @@
+all:
+  hosts:
+    XR1:
+      ansible_host: 192.168.29.44
+      ansible_user: vayu
+      ansible_password: vayu
+      loopback_ip: 1.1.1.1
+      interface_ip: 192.168.10.10
+      subnet_mask: 255.255.255.0
+      main_interface: GigabitEthernet0/0/0/0
+      loopback_interface: Loopback1
+      ospf_process_id: 1
+      ospf_area: 0
+
+    XR2:
+      ansible_host: 192.168.29.25
+      ansible_user: vayu
+      ansible_password: vayu
+      loopback_ip: 1.1.1.2
+      interface_ip: 192.168.20.10
+      subnet_mask: 255.255.255.0
+      main_interface: GigabitEthernet0/0/0/1
+      loopback_interface: Loopback2
+      ospf_process_id: 1
+      ospf_area: 0
+
+    XR2:
+      ansible_host: 192.168.29.25
+      ansible_user: vayu
+      ansible_password: vayu
+      loopback_ip: 1.1.1.2
+      interface_ip: 192.168.10.20
+      subnet_mask: 255.255.255.0
+      main_interface: GigabitEthernet0/0/0/0
+      loopback_interface: Loopback2
+      ospf_process_id: 1
+      ospf_area: 0
+
+    XR3:
+      ansible_host: 192.168.29.141
+      ansible_user: vayu
+      ansible_password: vayu
+      loopback_ip: 1.1.1.3
+      interface_ip: 192.168.20.30
+      subnet_mask: 255.255.255.0
+      main_interface: GigabitEthernet0/0/0/0
+      loopback_interface: Loopback3
+      ospf_process_id: 1
+      ospf_area: 0
+
+  vars:
+    ansible_network_os: iosxr
+    ansible_connection: network_cli
+    ansible_python_interpreter: /usr/bin/python3
